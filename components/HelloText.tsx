@@ -29,13 +29,17 @@ export function HelloText({ reduced }: { reduced: boolean }) {
       ref.current.scale.setScalar(easeOutBack(t));
     }
 
-    // Emissive shimmer after 1.5s
+    // Emissive shimmer after 1.5s — pulses between purple and cyan
     if (elapsed > 1.5) {
-      const mat = ref.current.material as THREE.MeshBasicMaterial & {
-        emissiveIntensity?: number;
-      };
-      if (mat && mat.emissiveIntensity !== undefined) {
-        mat.emissiveIntensity = 0.3 + Math.sin(elapsed * 2) * 0.15;
+      const mat = ref.current.material as THREE.MeshStandardMaterial;
+      if (mat?.emissive) {
+        const pulse = (Math.sin(elapsed * 2) + 1) / 2; // 0..1
+        mat.emissive.lerpColors(
+          new THREE.Color("#7C3AED"),
+          new THREE.Color("#06B6D4"),
+          pulse
+        );
+        mat.emissiveIntensity = 0.4 + pulse * 0.3;
       }
     }
   });
@@ -47,15 +51,17 @@ export function HelloText({ reduced }: { reduced: boolean }) {
       anchorX="center"
       anchorY="middle"
       scale={reduced ? 1 : 0}
-      outlineColor="#6644ff"
-      outlineWidth={0.015}
+      // Purple fill + cyan outline → evokes the design gradient
+      color="#7C3AED"
+      outlineColor="#06B6D4"
+      outlineWidth={0.025}
       fillOpacity={1}
     >
       Hello World
       <meshStandardMaterial
-        color="#ffffff"
-        emissive="#6644ff"
-        emissiveIntensity={0.3}
+        color="#7C3AED"
+        emissive="#7C3AED"
+        emissiveIntensity={0.4}
       />
     </Text>
   );

@@ -15,7 +15,7 @@ export function Scene() {
       gl={{ antialias: true }}
       dpr={[1, 2]}
     >
-      <color attach="background" args={["#000000"]} />
+      <color attach="background" args={["#0A0A0F"]} />
       <ambientLight intensity={0.4} />
       <directionalLight position={[10, 10, 5]} intensity={1.2} />
       <ParticleField reduced={reduced} />
