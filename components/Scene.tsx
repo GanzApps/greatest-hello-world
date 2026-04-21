@@ -2,6 +2,7 @@
 
 import { Canvas } from "@react-three/fiber";
 import { CameraRig } from "./CameraRig";
+import { ClickBurst } from "./ClickBurst";
 import { HelloText } from "./HelloText";
 import { useReducedMotion } from "../hooks/useReducedMotion";
 
@@ -18,6 +19,7 @@ export function Scene() {
       <ambientLight intensity={1} />
       <HelloText reduced={reduced} />
       <CameraRig reduced={reduced} />
+      <ClickBurst reduced={reduced} />
     </Canvas>
   );
 }
