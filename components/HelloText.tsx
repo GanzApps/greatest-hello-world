@@ -46,6 +46,7 @@ export function HelloText({ reduced }: { reduced: boolean }) {
   return (
     <Text
       ref={ref}
+      font="/fonts/SpaceGrotesk-Bold.ttf"
       fontSize={1.4}
       anchorX="center"
       anchorY="middle"
