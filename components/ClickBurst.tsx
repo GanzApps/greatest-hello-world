@@ -21,10 +21,16 @@ function BurstInstance({
   const done = useRef(false);
 
   const { positions, velocities } = useMemo(() => {
+    // Pre-init positions to burst origin — prevents 1-frame flash at (0,0,0)
     const pos = new Float32Array(BURST_COUNT * 3);
+    for (let i = 0; i < BURST_COUNT; i++) {
+      pos[i * 3] = burst.position.x;
+      pos[i * 3 + 1] = burst.position.y;
+      pos[i * 3 + 2] = burst.position.z;
+    }
+
     const vels: THREE.Vector3[] = [];
     for (let i = 0; i < BURST_COUNT; i++) {
-      // Uniform sphere distribution
       const theta = Math.random() * Math.PI * 2;
       const phi = Math.acos(2 * Math.random() - 1);
       const speed = 0.8 + Math.random() * 1.5;
@@ -37,7 +43,7 @@ function BurstInstance({
       );
     }
     return { positions: pos, velocities: vels };
-  }, []);
+  }, [burst.position]);
 
   useFrame((state) => {
     if (!ref.current || done.current) return;
@@ -64,9 +70,7 @@ function BurstInstance({
     }
     posAttr.needsUpdate = true;
 
-    // Ease out opacity
-    (ref.current.material as THREE.PointsMaterial).opacity =
-      1 - t * t;
+    (ref.current.material as THREE.PointsMaterial).opacity = 1 - t * t;
   });
 
   return (
@@ -75,8 +79,8 @@ function BurstInstance({
         <bufferAttribute attach="attributes-position" args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
-        size={0.07}
-        color="#9966ff"
+        size={0.06}
+        color="#ffffff"
         transparent
         opacity={1}
         sizeAttenuation
@@ -96,10 +100,7 @@ export function ClickBurst({ reduced }: { reduced: boolean }) {
       if (reduced) return;
       e.stopPropagation();
       const id = nextId++;
-      setBursts((prev) => [
-        ...prev,
-        { id, position: e.point.clone() },
-      ]);
+      setBursts((prev) => [...prev, { id, position: e.point.clone() }]);
     },
     [reduced]
   );
@@ -110,7 +111,6 @@ export function ClickBurst({ reduced }: { reduced: boolean }) {
 
   return (
     <>
-      {/* Invisible full-screen plane captures clicks in 3D space */}
       <mesh onClick={handleClick} visible={false}>
         <planeGeometry args={[200, 200]} />
         <meshBasicMaterial side={THREE.DoubleSide} />
