@@ -1,6 +1,7 @@
 "use client";
 
 import { Scene } from "../components/Scene";
+import { UIOverlay } from "../components/UIOverlay";
 
 export default function Home() {
   return (
@@ -14,15 +15,13 @@ export default function Home() {
         </div>
       </noscript>
 
-      {/* Animated gradient blobs — matches Stitch design */}
+      {/* Animated gradient blobs */}
       <div
         aria-hidden
         className="pointer-events-none absolute"
         style={{
-          top: "-10vw",
-          left: "-10vw",
-          width: "40vw",
-          height: "40vw",
+          top: "-10vw", left: "-10vw",
+          width: "40vw", height: "40vw",
           borderRadius: "50%",
           background: "#7C3AED",
           filter: "blur(100px)",
@@ -34,10 +33,8 @@ export default function Home() {
         aria-hidden
         className="pointer-events-none absolute"
         style={{
-          bottom: "-5vw",
-          right: "-5vw",
-          width: "35vw",
-          height: "35vw",
+          bottom: "-5vw", right: "-5vw",
+          width: "35vw", height: "35vw",
           borderRadius: "50%",
           background: "#06B6D4",
           filter: "blur(100px)",
@@ -46,10 +43,13 @@ export default function Home() {
         }}
       />
 
-      {/* R3F canvas — transparent, sits on top of blobs */}
+      {/* R3F canvas */}
       <div className="absolute inset-0">
         <Scene />
       </div>
+
+      {/* UI overlay — tagline, glow ring, CTA */}
+      <UIOverlay />
 
       <style>{`
         @keyframes pulse-blob {
