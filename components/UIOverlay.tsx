@@ -43,34 +43,63 @@ export function UIOverlay() {
         }
       />
 
-      {/* Text block — anchored below center so it clears the 3D Hello World */}
-      <div
-        className="absolute left-0 right-0 flex flex-col items-center gap-4"
-        style={{ top: "62%" }}
+      {/* Tagline — below center, clears 3D Hello World */}
+      <motion.p
+        className="absolute left-0 right-0 text-center px-4"
+        style={{
+          top: "62%",
+          fontFamily: "Inter, sans-serif",
+          fontSize: "clamp(0.85rem, 1.4vw, 1rem)",
+          letterSpacing: "0.02em",
+          color: "rgba(255,255,255,0.75)",
+        }}
+        initial={reduced ? false : { opacity: 0, y: 16 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={
+          reduced
+            ? { duration: 0 }
+            : { delay: 2.0, duration: 0.7, ease: "easeOut" }
+        }
       >
-        {/* Tagline */}
-        <motion.p
-          style={{
-            fontFamily: "Inter, sans-serif",
-            fontSize: "clamp(0.85rem, 1.4vw, 1rem)",
-            letterSpacing: "0.02em",
-            color: "rgba(255,255,255,0.75)",
-            textAlign: "center",
-            padding: "0 1rem",
-          }}
-          initial={reduced ? false : { opacity: 0, y: 16 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={
-            reduced
-              ? { duration: 0 }
-              : { delay: 2.0, duration: 0.7, ease: "easeOut" }
-          }
-        >
-          The only Hello World you&apos;ll never forget.
-        </motion.p>
+        The only Hello World you&apos;ll never forget.
+      </motion.p>
 
-        {/* CTA */}
-        <motion.p
+      {/* Bottom CTA — amber pulse dot + "Click Anywhere" */}
+      <motion.div
+        className="absolute left-0 right-0 flex flex-col items-center gap-3"
+        style={{ bottom: "clamp(2rem, 5vh, 4rem)" }}
+        initial={reduced ? false : { opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={
+          reduced
+            ? { duration: 0 }
+            : { delay: 2.8, duration: 0.6, ease: "easeOut" }
+        }
+      >
+        {/* Amber pulse dot — accent #F59E0B */}
+        <motion.div
+          aria-hidden
+          className="rounded-full"
+          style={{
+            width: 10,
+            height: 10,
+            background: "#F59E0B",
+            boxShadow: "0 0 8px 2px rgba(245, 158, 11, 0.5)",
+          }}
+          animate={
+            reduced
+              ? {}
+              : { scale: [1, 1.2, 1], opacity: [1, 0.5, 1] }
+          }
+          transition={{
+            duration: 2,
+            repeat: Infinity,
+            ease: [0.4, 0, 0.6, 1],
+          }}
+        />
+
+        {/* CTA text */}
+        <p
           style={{
             fontFamily: "Inter, sans-serif",
             fontSize: "clamp(0.7rem, 1vw, 0.85rem)",
@@ -80,19 +109,11 @@ export function UIOverlay() {
             WebkitBackgroundClip: "text",
             WebkitTextFillColor: "transparent",
             backgroundClip: "text",
-            textAlign: "center",
           }}
-          initial={reduced ? false : { opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={
-            reduced
-              ? { duration: 0 }
-              : { delay: 2.8, duration: 0.6, ease: "easeOut" }
-          }
         >
           Click Anywhere
-        </motion.p>
-      </div>
+        </p>
+      </motion.div>
     </div>
   );
 }
